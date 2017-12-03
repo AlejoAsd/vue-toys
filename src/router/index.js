@@ -9,6 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: { name: 'YesNo' },
+    },
+    {
+      path: '/yesno',
       name: 'YesNo',
       component: YesNo,
     },
