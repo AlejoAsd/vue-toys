@@ -3,6 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const lodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -46,8 +48,12 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        include: [resolve('src'), resolve('test')],
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        options: {
+          plugins: ['lodash'],
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -72,7 +78,11 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
     ]
-  }
+  },
+  plugins: [
+    new lodashModuleReplacementPlugin,
+    new webpack.optimize.UglifyJsPlugin
+  ]
 }
