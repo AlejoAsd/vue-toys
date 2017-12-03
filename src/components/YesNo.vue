@@ -1,11 +1,13 @@
 <template>
   <div>
     <h1>Ask a question</h1>
-    <form target="#">
-      <input name="question">
-      <input type="submit" value="Ask" @click.prevent="ask">
+    <form>
+      <div class="ui input">
+        <input name="question">
+      </div>
+      <input class="ui button" type="submit" value="Ask" @click.prevent="ask">
     </form>
-    <h1 v-if="answer.answer">Answer: {{answer.answer}}</h1>
+    <h1 v-if="answer.answer">{{answer.answer}}</h1>
     <img :src="answer.image">
   </div>
 </template>
@@ -29,7 +31,7 @@ export default {
     ask() {
       get('https://yesno.wtf/api')
       .then(function (response) {
-        capitalize(response.data);
+        response.data.answer = capitalize(response.data.answer);
         this.answer = response.data;
       }.bind(this));
     },
