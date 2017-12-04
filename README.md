@@ -1,7 +1,8 @@
 # Vue Toys
 
-Collection of simple Single Page Applications (SPAs) meant to try out Vue while
-using Webpack to manage files.
+Collection of simple Single Page Applications (SPAs) meant to try out Vue using
+Webpack as the bundler.
+
 Based on the excellent [vuejs-templates/webpack](https://github.com/vuejs-templates/webpack) project.
 
 ## Available SPAs

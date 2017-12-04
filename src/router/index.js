@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import YesNo from '@/components/YesNo';
-import VueInfo from '@/components/VueInfo';
+import Index from '@/components/Index';
 
 Vue.use(Router);
 
@@ -9,17 +8,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: { name: 'YesNo' },
+      name: 'Index',
+      component: Index,
     },
-    {
-      path: '/yesno',
-      name: 'YesNo',
-      component: YesNo,
-    },
-    {
-      path: '/vue',
-      name: 'VueInfo',
-      component: VueInfo,
-    },
+    ...Index.data().entries,
   ],
 });

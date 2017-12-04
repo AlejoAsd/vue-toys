@@ -26,7 +26,7 @@ export default {
   name: 'VueInfo',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      msg: 'Vue.js resources',
     };
   },
 };
