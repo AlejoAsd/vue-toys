@@ -23,10 +23,11 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.css'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '+': resolve('node_modules'),
     }
   },
   module: {
@@ -83,6 +84,10 @@ module.exports = {
   },
   plugins: [
     new lodashModuleReplacementPlugin,
-    new webpack.optimize.UglifyJsPlugin
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
+    new webpack.optimize.UglifyJsPlugin,
   ]
 }

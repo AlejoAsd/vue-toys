@@ -15,6 +15,7 @@
 <script>
 import { capitalize } from 'lodash';
 import { get } from 'axios';
+import '../../semantic/dist/semantic.css';
 
 export default {
   name: 'YesNo',
