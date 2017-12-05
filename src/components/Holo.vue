@@ -6,7 +6,7 @@
           <!-- Text -->
           <h5>Text</h5>
           <div class="ui fluid right labeled input">
-            <input type="text" @keyup.enter="addToQueue">
+            <input :value="text" type="text" @keyup.enter="addToQueue">
             <a class="ui tag blue label" @click="addToQueue">
               Send
             </a>
@@ -19,11 +19,11 @@
           <h5>Font</h5>
           <div class="ui stackable two column grid">
             <div class="row">
-              <div class="column" :key="font.value" v-for="font in fonts">
+              <div class="column" :key="font.value" v-for="f in fonts">
                 <button class="ui fluid toggle button"
-                        :class="{ blue: font === font.value }"
-                        @click="updateSelectedFont(font.value)">
-                  {{ font.name }}
+                        :class="{ blue: font === f.value }"
+                        @click="updateSelectedFont(f.value)">
+                  {{ f.name }}
                 </button>
               </div>
             </div>
@@ -75,6 +75,7 @@
         fonts: fonts,
         font: fonts[0].value,
         speed: 5,
+        text: '',
       };
     },
     methods: {
