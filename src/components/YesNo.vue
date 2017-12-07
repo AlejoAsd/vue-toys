@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <h1>Ask a question</h1>
     <form>
       <div class="ui input">
@@ -13,14 +13,13 @@
 </template>
 
 <style scoped>
-.content {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .content {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>
 
 <script>
@@ -29,7 +28,11 @@ import { get } from 'axios';
 import '../../semantic/dist/semantic.css';
 
 export default {
-  name: 'YesNo',
+  router_config: {
+    name: 'YesNo',
+    description: 'Get the answers you need!',
+    icon: 'question',
+  },
   data() {
     return {
       answer: {

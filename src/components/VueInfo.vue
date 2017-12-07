@@ -21,18 +21,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'VueInfo',
-  data() {
-    return {
-      msg: 'Vue.js resources',
-    };
-  },
-};
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .content {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -58,3 +46,15 @@ a {
   color: #42b983;
 }
 </style>
+
+<script>
+export default {
+  router_config: {
+    name: 'Vue',
+    path: 'vue',
+    description: 'List of useful introductory resources to the Vue framework.',
+    icon: 'book',
+  },
+  data() { return {} },
+};
+</script>
