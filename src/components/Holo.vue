@@ -7,7 +7,7 @@
             <!-- Text -->
             <h5>Text</h5>
             <div class="ui fluid right labeled input">
-              <input :value="text" type="text" @keyup.enter="qAdd">
+              <input id="text" v-model="text" type="text" @keyup.enter="qAdd">
               <a class="ui tag blue label" @click="qAdd">
                 Send
               </a>
@@ -30,7 +30,7 @@
           <!-- Speed -->
           <h5>Speed</h5>
           <div class="ui blue range" id="my-range"></div>
-          <input style="display: none;" id="speed" :value="speed">
+          <input style="display: none;" id="speed" v-model="speed">
           <!-- Font -->
           <h5>Font</h5>
           <div class="ui doubling stackable four column grid">
@@ -65,8 +65,9 @@
 </style>
 
 <script>
-  import { chunk } from 'lodash';
+  import { unset, trim } from 'lodash';
   import { post } from 'axios';
+  import { stringify } from 'qs';
   import '../../semantic/dist/semantic'
   import 'semantic-ui-range/range';
   import 'semantic-ui-range/range.css';
@@ -83,6 +84,12 @@
     { value: 3, name: 'LCD' },
   ]
 
+  const STATES = Object.freeze({
+    IDLE: 0,
+    SENDING: 1,
+    STOPPED: 1,
+  });
+
   export default {
     router_config: {
       name: 'HOLO',
@@ -90,39 +97,66 @@
     },
     data() {
       return {
+        text: '',
+        speed: 5,
         OUTPUT_TYPES,
         type: OUTPUT_TYPES[0],
         FONTS,
         font: FONTS[0],
-        speed: 5,
-        text: '',
         // Service variables
-        service_url: 'localhost:5123/',
+        service_url: 'localhost:5123/test/',
         queue: [],
-        queue_state: undefined,
+        state: STATES.IDLE,
       };
     },
     methods: {
       updateSelectedType(value) { this.type = value; },
       updateSelectedFont(value) { this.font = value; },
       clearText() { this.text = '' },
+      qStateActive(state) {
+        return this.state === STATES.SENDING;
+      },
       qNext() {
-        if (!queue_state) {
+        if (this.qStateActive(this.state)) {
           let entry = this.queue.pop();
-          const url = entry.url && unset(entry, 'url')
-          post('')
+          // If no entries are found, update the state and exit
+          if (!entry) {
+            this.state = STATES.IDLE;
+            return;
+          }
+          // Prepare URL
+          let url = `${this.service_url}${entry.url}/`;
+          if (!url.match('/^https?:\/\//')) url = 'http://' + url;
+          // Remove url from entry to avoid sending it as data
+          unset(entry, 'url');
+          // Make request
+          post(url, stringify(entry))
+            .then(function(response) {
+              console.log(`Finished ${response.data}`);
+              this.qNext();
+            }.bind(this));
         }
       },
       qAdd() {
-        queue.unshift({
-          url: this.url || 'scrolling',
-          texto: this.text,
+        // Don't add entries with empty text
+        if (trim(this.text) === '') return;
+        // Add entry to the beginning of the array to make it act as a queue
+        this.queue.unshift({
+          url: this.type.url,
+          text: this.text,
           speed: this.speed,
-          font: this.font,
+          font: this.font.value,
         });
+        // Update the state
+        this.state = STATES.SENDING;
+        // Clear the text input
         this.clearText();
+        // Start sending
+        this.qNext();
       },
-      qRemove(entry) {},
+      qRemove(entry) {
+        this.queue.splice(entry, 1);
+      },
     },
     mounted() {
       this.$nextTick(function () {
@@ -135,6 +169,7 @@
           start: 5,
           input: '#rangevalue',
         });
+        $('#text').focus();
       })
     },
   };
