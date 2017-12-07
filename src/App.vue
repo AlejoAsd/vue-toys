@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import '../semantic/dist/semantic.css';
+
 export default {
   name: 'app',
 };
