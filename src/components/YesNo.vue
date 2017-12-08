@@ -29,7 +29,7 @@ import { get } from 'axios';
 export default {
   router_config: {
     name: 'YesNo',
-    description: 'Get the answers you need!',
+    description: 'Get the answers you seek!',
     icon: 'question',
   },
   data() {

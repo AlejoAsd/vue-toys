@@ -29,8 +29,9 @@
           </div>
           <!-- Speed -->
           <h5>Speed</h5>
-          <div class="ui blue range" id="my-range"></div>
-          <input style="display: none;" id="speed" v-model="speed">
+          <vue-slider ref="slider" v-model="speed" :dot-size="20"
+                      :min="1" :max="10" :value="5" :tooltip="false"
+                      :piecewise="true" :piecewise-label="true"/>
           <!-- Font -->
           <h5>Font</h5>
           <div class="ui doubling stackable four column grid">
@@ -68,9 +69,8 @@
   import { unset, trim } from 'lodash';
   import { post } from 'axios';
   import { stringify } from 'qs';
+  import vueSlider from 'vue-slider-component';
   import '../../semantic/dist/semantic'
-  import 'semantic-ui-range/range';
-  import 'semantic-ui-range/range.css';
 
   const OUTPUT_TYPES = [
     { value: 0, name:'Scrolling Text', url: 'text/scrolling' },
@@ -91,6 +91,9 @@
   });
 
   export default {
+    components: {
+      vueSlider
+    },
     router_config: {
       name: 'HOLO',
       icon: 'blue bullhorn',
@@ -160,15 +163,11 @@
     },
     mounted() {
       this.$nextTick(function () {
+        // Setup sticky settings for Text input
         $('.ui.sticky').sticky({
           context: '#send',
         });
-        $('#my-range').range({
-          min: 1,
-          max: 10,
-          start: 5,
-          input: '#rangevalue',
-        });
+
         $('#text').focus();
       })
     },
